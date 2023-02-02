@@ -18,7 +18,7 @@ public interface EmployeeMapper {
 	//학생 추가
 	int insertStudent(Student student);
 	//학생 총 수
-	int studentTotalCount();
+	int studentTotalCount(String searchWord);
 	//학생 리스트
 	List<Student> selectStudentList(Map<String, Object> paramMap);
 	
@@ -27,7 +27,7 @@ public interface EmployeeMapper {
 	//직원 추가
 	int insertTeacher(Teacher teacher);
 	//강사 총 수
-	int teacherTotalCount();
+	int teacherTotalCount(String searchWord);
 	//강사 리스트
 	List<Teacher> selectTeacherList(Map<String, Object> paramMap);
 	
@@ -40,7 +40,7 @@ public interface EmployeeMapper {
 	//직원 추가
 	int insertEmployee(Employee employee);
 	//직원 총 수
-	int empTotalCount();
+	int empTotalCount(String searchWord);
 	//직원리스트
 	List<Employee> selectEmployeeList(Map<String, Object> paramMap);
 	

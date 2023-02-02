@@ -30,9 +30,9 @@ public class EmployeeService {
 		return employeeMapper.insertStudent(student);
 	}
 	//학생 리스트 총 갯수
-	public int studentTotalCount()
+	public int studentTotalCount(String searchWord)
 	{
-		return employeeMapper.studentTotalCount();
+		return employeeMapper.studentTotalCount(searchWord);
 	}
 	//학생 리스트
 	public List<Student> getStudentList(int currentPage, int rowPerPage)
@@ -58,9 +58,9 @@ public class EmployeeService {
 	}
 	
 	//강사 리스트 총 갯수
-	public int teacherTotalCount()
+	public int teacherTotalCount(String searchWord)
 	{
-		return employeeMapper.teacherTotalCount();
+		return employeeMapper.teacherTotalCount(searchWord);
 	}
 	
 	//강사 리스트
@@ -103,18 +103,19 @@ public class EmployeeService {
 	}
 	
 	//직원 리스트 총 갯수
-	public int empTotalCount()
+	public int empTotalCount(String searchWord)
 	{
-		return employeeMapper.empTotalCount();
+		return employeeMapper.empTotalCount(searchWord);
 	}
 	
 	//직원 리스트
-	public List<Employee> getEmployeeList(int currentPage, int rowPerPage)
+	public List<Employee> getEmployeeList(int currentPage, int rowPerPage, String searchWord)
 	{
 		int beginRow = (currentPage - 1) * rowPerPage;
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("beginRow", beginRow);
 		paramMap.put("rowPerPage", rowPerPage);
+		paramMap.put("searchWord", searchWord);
 		
 		return employeeMapper.selectEmployeeList(paramMap);
 	}
