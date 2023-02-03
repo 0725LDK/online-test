@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j // static Log log = new Log(); 로그 쓸때
-@WebFilter("/employee/student/*")
+@WebFilter("/student/*")
 public class StudentLoginFilter implements Filter{
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
@@ -25,7 +25,7 @@ public class StudentLoginFilter implements Filter{
 		{
 			HttpServletRequest req = (HttpServletRequest)request;
 			HttpSession session = req.getSession();
-			if(session.getAttribute("loginEmp") == null)
+			if(session.getAttribute("loginStudent") == null)
 			{
 				((HttpServletResponse)response).sendRedirect(req.getContextPath()+"/loginEmp");
 				return;

@@ -9,8 +9,12 @@
 </head>
 <body>
 	<!-- 로그인 전 -->
-	<h1>로그인</h1>
 	<c:if test="${loginEmp == null}">
+		<h1>직원 로그인</h1>
+	
+		<!-- 로그인 선택 메뉴 -->
+		<c:import url="/WEB-INF/view/employee/inc/loginMenu.jsp"></c:import><br>
+	
 		<form action="${pageContext.request.contextPath}/loginEmp" method="post">
 			<table>
 				<tr>
@@ -26,7 +30,7 @@
 		</form>
 	</c:if>
 	
-	<!-- 로그인 실패 -->
+	<!-- 로그인 되어 있으면 -->
 	<c:if test="${loginEmp != null}">
 		${loginEmp.empName} 님 반갑습니다.
 		<div>

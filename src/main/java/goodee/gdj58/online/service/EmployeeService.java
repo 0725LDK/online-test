@@ -84,7 +84,7 @@ public class EmployeeService {
 		return employeeMapper.updateEmployeePw(paramMap);
 	}
 	
-	//로그인 
+	//강사 로그인 
 	public Employee login (Employee emp)
 	{
 		return employeeMapper.login(emp);
