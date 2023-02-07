@@ -92,9 +92,9 @@ public class TeacherService {
 	}
 	
 	//강사 시험별 문제 리스트 총 갯수
-	public int questionTotalCount(String searchWord)
+	public int questionTotalCount(String searchWord, int testNo)
 	{
-		return teacherMapper.questionTotalCount(searchWord);
+		return teacherMapper.questionTotalCount(searchWord, testNo);
 	}
 	//강사 시험별 문제 리스트
 	public List<Question> getQuestionList(int currentPage, int rowPerPage, String searchWord, int testNo)

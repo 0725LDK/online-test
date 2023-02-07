@@ -225,7 +225,7 @@ public class TeacherController {
 		
 		log.debug(searchWord+"<---searchWord");
 		
-		int questionTotalCount = teacherService.questionTotalCount(searchWord);
+		int questionTotalCount = teacherService.questionTotalCount(searchWord, testNo);
 		int endPage = (int)(Math.ceil(currentPage / 10.0)) * 10; //페이징 버튼의 끝
 		int startPage = endPage - 9; //페이징 버튼의 시작
 		int firstPage = 1;

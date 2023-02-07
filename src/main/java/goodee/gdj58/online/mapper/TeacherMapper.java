@@ -38,10 +38,10 @@ public interface TeacherMapper {
 	//강사 문제별 보기 리스트
 	List<Example> selectExampleList(Map<String, Object> paramMap);
 	//강사 시험별 문제 총 수
-	int questionTotalCount(String searchWord);
+	int questionTotalCount(String searchWord, int testNo);
 	//강사 시험별 문제 리스트
 	List<Question> selectQuestionList(Map<String, Object> paramMap);
-	//강사 총 수
+	//강사 시험 총 수
 	int testTotalCount(String searchWord);
 	//강사 시험 리스트
 	List<Test> selectTestList(Map<String, Object> paramMap);

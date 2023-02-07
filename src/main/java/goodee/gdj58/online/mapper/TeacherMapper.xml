@@ -103,11 +103,12 @@
 		SELECT
 			COUNT(*) count
 		FROM question
-		<where>
+		WHERE test_no=#{testNo}
+		
 			<if test="searchWord != null || searchWord != '' ">
-				question_title LIKE CONCAT('%',#{searchWord},'%')
+				AND question_title LIKE CONCAT('%',#{searchWord},'%')
 			</if>
-		</where>
+		
 	</select>
 	
 	<!-- 강사 시험별문제 리스트 -->

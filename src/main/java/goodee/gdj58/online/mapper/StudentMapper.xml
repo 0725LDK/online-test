@@ -1,6 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.online.mapper.StudentMapper">
+	
+	<!-- 학생 문제별 보기 리스트 -->
+	<select id="selectExampleList" resultType="java.util.Map" parameterType="java.util.Map"><!--resultType 리스트 타입 반환 할때   -->
+		SELECT ex.example_idx exampleIdx, ex.example_title exampleTitle
+		FROM question qu INNER JOIN example ex ON qu.question_no = ex.question_no
+		WHERE test_no = #{testNo};
+	</select>
+	<!-- 학생 시험 총 수 -->
+	<select id="questionTotalCount" parameterType="String" resultType="int">
+		SELECT
+			COUNT(*) count
+		FROM question
+		<where>
+			<if test="searchWord != null || searchWord != '' ">
+				question_title LIKE CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+	</select>
+	<!-- 학생 시험별문제 리스트 -->
+	<select id="selectQuestionList" resultType="java.util.Map" parameterType="java.util.Map"><!--resultType 리스트 타입 반환 할때   -->
+		SELECT
+			a.test_no testNo
+			, a.test_title testTitle
+			, a.test_date testDate
+			, a.question_idx questionIdx
+			, a.question_title questionTitle
+			, MAX(if(a.example_idx = 1, a.example_title, 0)) exampleIdx1
+			, MAX(if(a.example_idx = 2, a.example_title, 0)) exampleIdx2
+			, MAX(if(a.example_idx = 3, a.example_title, 0)) exampleIdx3
+			, MAX(if(a.example_idx = 4, a.example_title, 0)) exampleIdx4
+			, MAX(if(a.example_idx = 1, a.example_ox, 0)) answer1
+			, MAX(if(a.example_idx = 2, a.example_ox, 0)) answer2
+			, MAX(if(a.example_idx = 3, a.example_ox, 0)) answer3
+			, MAX(if(a.example_idx = 4, a.example_ox, 0)) answer4			
+		FROM
+			(SELECT
+				t.test_no
+				, t.test_title
+				, t.test_date
+				, q.question_idx
+				, q.question_title
+				, e.example_idx
+				, e.example_title
+				, e.example_ox
+			FROM test t
+				INNER JOIN question q
+				ON t.test_no = q.test_no
+				INNER JOIN example e
+				ON q.question_no = e.question_no
+			WHERE t.test_no = #{testNo}
+			ORDER BY q.question_idx ASC, example_idx ASC) a
+		GROUP BY a.question_idx
+	</select>
+	
+	<!-- 학생 시험 총 수 -->
+	<select id="testTotalCount" parameterType="String" resultType="int">
+		SELECT
+			COUNT(*) count
+		FROM test
+		<where>
+			<if test="searchWord != null || searchWord != '' ">
+				test_title LIKE CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+	</select>
+	
+	<!-- 학생 시험 리스트 -->
+	<select id="selectTestList" resultType="goodee.gdj58.online.vo.Test" parameterType="java.util.Map">
+		SELECT
+			test_no testNo
+			, test_title testTitle
+			, test_date testDate
+		FROM test
+		ORDER BY test_no ASC
+		LIMIT #{beginRow}, #{rowPerPage}
+	</select>
 	<!-- 학생 로그인 -->
 	<select id="login" parameterType="goodee.gdj58.online.vo.Student" resultType="goodee.gdj58.online.vo.Student">
 		SELECT
