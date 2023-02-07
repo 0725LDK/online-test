@@ -6,10 +6,97 @@
 <head>
 <meta charset="UTF-8">
 <title> </title>
+
 </head>
 <body>
 	<h1>Teacher Test List</h1>
 	<!-- 강사 선택 메뉴 -->
 	<c:import url="/WEB-INF/view/teacher/inc/teacherMenu.jsp"></c:import><br>
+	
+	<!-- 검색 -->
+	<form action="${pageContext.request.contextPath }/teacher/teacherTestList" method="get">
+		<input type="text" name="searchWord">
+		<button type="submit">시험제목 검색</button>
+	</form>
+	<br>
+	
+	<!-- 시험 리스트 -->
+	<table border="1">
+		<tr>
+			<td>시험 번호</td>
+			<td>시험 제목</td>
+			<td>시험 일자</td>
+			<td>수정</td>
+			<td>삭제</td>
+		</tr>
+		<c:forEach var="t" items="${list }" varStatus="status">
+		
+			<tr>
+				<td>${t.testNo}</td>
+				<td>
+					<a href="${pageContext.request.contextPath }/teacher/teacherQuestionList?testNo=${t.testNo}">${t.testTitle}</a>
+				</td>
+				<td>${t.testDate}</td>
+				<td>
+					<a href="${pageContext.request.contextPath }/teacher/teacherModifyTest?testNo=${t.testNo}&testTitle=${t.testTitle}&testDate=${t.testDate}">수정</a>
+				</td>
+				<td>
+					<a href="${pageContext.request.contextPath }/teacher/removeTest?testNo=${t.testNo}">삭제</a>
+				</td>
+			</tr>	
+
+		</c:forEach>
+	</table>
+	
+	<!-- 페이징 -->
+	<div>
+		<c:if test="${currentPage == 1 }">
+			<span>처음으로</span>
+		</c:if>
+		<c:if test="${currentPage != 1 }">
+			<a href="${pageContext.request.contextPath }/teacher/teacherTestList?currentPage=1&searchWord=${searchWord}">처음으로</a>
+		</c:if>
+		<c:if test="${startPage <= 10}">
+			<span>이전 10페이지</span>
+		</c:if>
+		<c:if test="${startPage > 1}">
+			<a href="${pageContext.request.contextPath }/teacher/teacherTestList?currentPage=${startPage-10}&searchWord=${searchWord}">이전 10페이지</a>
+		</c:if>
+			
+		<c:forEach var="i" begin="${startPage }" end="${endPage }" step="1">
+			<a href="${pageContext.request.contextPath }/teacher/teacherTestList?currentPage=${i}">${i}</a>
+		</c:forEach>
+			
+		<c:if test="${endPage - startPage < 9 }">
+			<span>다음 10페이지</span>
+		</c:if>
+		<c:if test="${currentPage==lastPage}">
+			<span>끝으로</span>
+		</c:if>
+		<c:if test="${endPage - startPage == 9 }">
+			<a href="${pageContext.request.contextPath }/teacher/teacherTestList?currentPage=${startPage+10}&searchWord=${searchWord}">다음 10페이지</a>
+		</c:if>		
+		<c:if test="${currentPage < lastPage }">
+			<a href="${pageContext.request.contextPath }/teacher/teacherTestList?currentPage=${lastPage}&searchWord=${searchWord}">끝으로</a>
+		</c:if>
+	</div><br><br>
+	
+	<!-- 시험 등록 -->
+	<h2>Add Test</h2>
+	<form action="${pageContext.request.contextPath }/teacher/addTest" method="post">
+		<table border="1">
+			<tr>
+				<td>시험 제목  </td>
+				<td><input type="text" name="testTitle"></td>
+			</tr>
+			<tr>
+				<td>시험 날짜  </td>
+				<td><input type="date" name="testDate"></td>
+			</tr>
+		</table><br>
+		<button type="submit">시험 등록</button>
+	</form>
+	
+	
 </body>
 </html>

@@ -7,6 +7,6 @@ public class Test {
 	
 	private int testNo;
 	private String testTitle;
-	private String testData;
+	private String testDate;
 	
 }

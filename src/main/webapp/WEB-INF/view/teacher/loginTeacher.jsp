@@ -19,11 +19,11 @@
 			<table>
 				<tr>
 					<td>ID : </td>
-					<td><input type="text" name="teacherId"></td>
+					<td><input type="text" name="teacherId" value="t1"></td>
 				</tr>
 				<tr>
 					<td>PW : </td>
-					<td><input type="password" name="teacherPw"></td>
+					<td><input type="password" name="teacherPw" value="1234"></td>
 				</tr>
 			</table>
 			<button type="submit">로그인</button>
