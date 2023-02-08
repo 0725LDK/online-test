@@ -99,16 +99,11 @@
 	</select>
 
 	<!-- 강사 시험별 문제 총 수 -->
-	<select id="questionTotalCount" parameterType="String" resultType="int">
+	<select id="questionTotalCount" parameterType="int" resultType="int">
 		SELECT
 			COUNT(*) count
 		FROM question
 		WHERE test_no=#{testNo}
-		
-			<if test="searchWord != null || searchWord != '' ">
-				AND question_title LIKE CONCAT('%',#{searchWord},'%')
-			</if>
-		
 	</select>
 	
 	<!-- 강사 시험별문제 리스트 -->

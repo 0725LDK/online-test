@@ -2,6 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.online.mapper.StudentMapper">
 	
+	<!-- 학생 시험 점수 -->
+	<select id="studentTestScore" parameterType="int" resultType="int">
+		SELECT Count(c.score)*10
+		FROM (SELECT if(b.exampleIdx = b.answer, 1,0 ) score
+				FROM (SELECT a.questionNo questionNo
+							, a.exampleIdx exampleIdx
+							, a.exampleOx exampleOx
+							, a.answer answer
+						FROM (SELECT te.test_no testNo
+									, st.student_no studentNo
+									, qu.question_no questionNo
+									, ex.example_idx exampleIdx
+									, ex.example_title exampleTitle
+									, ex.example_ox exampleOx
+									, pa.answer answer
+								FROM test te
+									INNER JOIN question qu ON te.test_no = qu.test_no
+									INNER JOIN example ex ON qu.question_no = ex.question_no
+									INNER JOIN paper pa ON ex.question_no = pa.question_no
+									INNER JOIN student st ON pa.student_no = st.student_no
+								WHERE st.student_no = #{studentNo}
+								) a
+						WHERE exampleOx = '정답'
+						) b
+				) c
+		WHERE c.score = 1;
+	
+	</select>
+	
+	<!-- 학생 시험 제출답안 -->
+	<insert id="studentTestPaper" parameterType="goodee.gdj58.online.vo.Paper">
+		INSERT INTO paper(student_no,question_no,answer) VALUES (#{studentNo},#{questionNo},#{answer})
+	</insert>
+	
 	<!-- 학생 문제별 보기 리스트 -->
 	<select id="selectExampleList" resultType="java.util.Map" parameterType="java.util.Map"><!--resultType 리스트 타입 반환 할때   -->
 		SELECT ex.example_idx exampleIdx, ex.example_title exampleTitle
@@ -25,6 +59,7 @@
 			a.test_no testNo
 			, a.test_title testTitle
 			, a.test_date testDate
+			, a.question_no questionNo
 			, a.question_idx questionIdx
 			, a.question_title questionTitle
 			, MAX(if(a.example_idx = 1, a.example_title, 0)) exampleIdx1
@@ -41,6 +76,7 @@
 				, t.test_title
 				, t.test_date
 				, q.question_idx
+				, q.question_no
 				, q.question_title
 				, e.example_idx
 				, e.example_title
@@ -68,13 +104,38 @@
 	</select>
 	
 	<!-- 학생 시험 리스트 -->
-	<select id="selectTestList" resultType="goodee.gdj58.online.vo.Test" parameterType="java.util.Map">
-		SELECT
-			test_no testNo
-			, test_title testTitle
-			, test_date testDate
-		FROM test
-		ORDER BY test_no ASC
+	<select id="selectTestList" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT b.testNo testNo
+				, b.testTitle testTitle
+				, b.testDate testDate
+				, SUM(score*10) score
+		FROM 
+			(SELECT a.testNo testNo
+					, a.testTitle testTitle
+					, a.testDate testDate
+					, a.questionIdx questionIdx
+					, a.exampleIdx exampleIdx
+					, a.exampleOx exampleOx
+					, a.answer answer		
+					, if(exampleIdx=answer,1,0) score
+			FROM 
+				(SELECT te.test_no testNo
+						, te.test_title testTitle
+						, te.test_date testDate
+						, qu.question_idx questionIdx
+						, qu.question_title questionTitle
+						, ex.example_idx exampleIdx
+						, ex.example_title exampleTitle
+						, ex.example_ox exampleOx
+						, if(pa.answer IS NULL ,0,pa.answer) answer
+				FROM question qu
+					INNER JOIN example ex ON qu.question_no = ex.question_no
+					LEFT outer JOIN paper pa ON ex.question_no = pa.question_no
+					INNER JOIN test te ON qu.test_no = te.test_no
+				)a
+			WHERE exampleOx = '정답'
+			)b	
+		GROUP BY testNo
 		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
 	<!-- 학생 로그인 -->

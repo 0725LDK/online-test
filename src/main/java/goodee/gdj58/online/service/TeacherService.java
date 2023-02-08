@@ -78,7 +78,7 @@ public class TeacherService {
 		return teacherMapper.insertTest(test);
 	}
 	
-	//강사 시험별 문제 리스트 총 갯수
+	//강사 문제별 보기 리스트 총 갯수
 	public int exampleTotalCount(int questionNo)
 	{
 		return teacherMapper.exampleTotalCount(questionNo);
@@ -92,9 +92,9 @@ public class TeacherService {
 	}
 	
 	//강사 시험별 문제 리스트 총 갯수
-	public int questionTotalCount(String searchWord, int testNo)
+	public int questionTotalCount(int testNo)
 	{
-		return teacherMapper.questionTotalCount(searchWord, testNo);
+		return teacherMapper.questionTotalCount(testNo);
 	}
 	//강사 시험별 문제 리스트
 	public List<Question> getQuestionList(int currentPage, int rowPerPage, String searchWord, int testNo)

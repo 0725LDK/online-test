@@ -97,7 +97,13 @@
 				<td><input type="text" name="questionTitle"></td>
 			</tr>
 		</table><br>
-		<button type="submit">문제 등록</button>
+			<c:if test="${questionTotalCount < 5}">
+				<button type="submit">시험 등록</button>
+			</c:if>
+			<c:if test="${questionTotalCount == 5}">
+				<span>문제는 5개까지 등록 가능합니다.</span>
+			</c:if>
+		
 	</form>
 	
 </body>

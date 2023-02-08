@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import goodee.gdj58.online.service.StudentService;
 import goodee.gdj58.online.vo.Example;
+import goodee.gdj58.online.vo.Paper;
 import goodee.gdj58.online.vo.Question;
 import goodee.gdj58.online.vo.Student;
 import goodee.gdj58.online.vo.Teacher;
@@ -25,15 +26,60 @@ import lombok.extern.slf4j.Slf4j;
 public class StudentController {
 	@Autowired StudentService studentService;
 	
+	//학생 시험 점수
+	@GetMapping("/student/studentTestPaper")
+	public String studentTestPaper(HttpSession session, Model model
+									,@RequestParam(value = "studentNo") int studentNo
+									)
+	{
+		int score = studentService.studentTestScore(studentNo);
+		model.addAttribute("score",score);
+		return "/student/studentTestList?studentNo="+studentNo;
+	}
+	
+	//학생 문제 제출 답안
+	@PostMapping("/student/studentTestPaper")
+	public String studentTestPaper(HttpSession session, Model model, Paper paper
+									,@RequestParam(value = "choice1", defaultValue = "5") int answer1 
+									,@RequestParam(value = "choice2", defaultValue = "5") int answer2 
+									,@RequestParam(value = "choice3", defaultValue = "5") int answer3 
+									,@RequestParam(value = "choice4", defaultValue = "5") int answer4 
+									,@RequestParam(value = "choice5", defaultValue = "5") int answer5 
+									,@RequestParam(value = "studentNo") int studentNo
+									,@RequestParam(value = "questionNo1",defaultValue = "") int questionNo1
+									,@RequestParam(value = "questionNo2",defaultValue = "") int questionNo2
+									,@RequestParam(value = "questionNo3",defaultValue = "") int questionNo3
+									,@RequestParam(value = "questionNo4",defaultValue = "") int questionNo4
+									,@RequestParam(value = "questionNo5",defaultValue = "") int questionNo5
+									)
+	{
+		int[] answer = {answer1,answer2,answer3,answer4,answer5};
+		int[] question = {questionNo1,questionNo2,questionNo3,questionNo4,questionNo5};
+		int j=0;
+		for (int i : answer) {
+			if(i<5)
+			{
+				paper.setAnswer(i);
+				paper.setQuestionNo(question[j]);
+				paper.setStudentNo(studentNo);
+				studentService.studentTestPaper(paper);
+				j++;
+			}
+		}
+	
+		model.addAttribute("studentNo", studentNo);
+		return "redirect:/student/studentTestList";
+	}
+	
 	//학생 시험별 문제 리스트
 	@GetMapping("/student/studentQuestionList")
-	
 	public String questionList(HttpSession session, Model model, 
-			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
-			@RequestParam(value = "rowPerPage", defaultValue = "10") int rowPerPage,
-			@RequestParam(value = "searchWord", defaultValue = "") String searchWord,
-			@RequestParam(value = "testNo", defaultValue = "") int testNo
-			)//int currentPage = Integer.parseInt(request.getParamenter("currentPage"));
+								@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+								@RequestParam(value = "rowPerPage", defaultValue = "10") int rowPerPage,
+								@RequestParam(value = "searchWord", defaultValue = "") String searchWord,
+								@RequestParam(value = "testNo", defaultValue = "") int testNo,
+								@RequestParam(value = "studentNo", defaultValue = "") int studentNo
+								)//int currentPage = Integer.parseInt(request.getParamenter("currentPage"));
 	{
 		
 		log.debug(searchWord+"<---searchWord");
@@ -60,22 +106,32 @@ public class StudentController {
 		model.addAttribute("lastPage",lastPage);
 		model.addAttribute("searchWord",searchWord);
 		model.addAttribute("testNo",testNo);
+		model.addAttribute("studentNo",studentNo);
 		model.addAttribute("questionTotalCount",questionTotalCount);
 		return "student/studentQuestionList";
 	}
 
 	//학생 시험 리스트
 	@GetMapping("/student/studentTestList")
-	public String testList(HttpSession session1, Model model, 
-			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
-			@RequestParam(value = "rowPerPage", defaultValue = "10") int rowPerPage,
-			@RequestParam(value = "searchWord", defaultValue = "") String searchWord
-				   )//int currentPage = Integer.parseInt(request.getParamenter("currentPage"));
+	public String testList(HttpSession session, Model model, 
+							@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+							@RequestParam(value = "rowPerPage", defaultValue = "10") int rowPerPage,
+							@RequestParam(value = "searchWord", defaultValue = "") String searchWord,
+							@RequestParam(value = "studentNo", defaultValue = "0") int studentNo
+							)//int currentPage = Integer.parseInt(request.getParamenter("currentPage"));
 		{
 		
 		log.debug(searchWord+"<---searchWord");
+		Student loginStudent = (Student)session.getAttribute("loginStudent");
+		if(loginStudent == null)
+		{
+			return "redirect:/student/loginStudent";
+		}
 		
+		studentNo = loginStudent.getStudentNo();
 		int testTotalCount = studentService.testTotalCount(searchWord);
+		int score = studentService.studentTestScore(studentNo);
+		model.addAttribute("score",score);
 		int endPage = (int)(Math.ceil(currentPage / 10.0)) * 10; //페이징 버튼의 끝
 		int startPage = endPage - 9; //페이징 버튼의 시작
 		int firstPage = 1;
@@ -86,7 +142,7 @@ public class StudentController {
 		}
 		
 		
-		List<Test> list = studentService.getTestList(currentPage,rowPerPage,searchWord);
+		List<Map<String,Object>> list = studentService.getTestList(currentPage,rowPerPage,searchWord);
 		//request.setAttribute("list", list);
 		model.addAttribute("list",list);
 		model.addAttribute("currentPage",currentPage);
@@ -95,6 +151,7 @@ public class StudentController {
 		model.addAttribute("firstPage",firstPage);
 		model.addAttribute("lastPage",lastPage);
 		model.addAttribute("searchWord",searchWord);
+		model.addAttribute("score",score);
 		return "student/studentTestList";
 	}
 	

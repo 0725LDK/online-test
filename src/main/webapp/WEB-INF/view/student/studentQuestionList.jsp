@@ -17,18 +17,19 @@
 	<form action="${pageContext.request.contextPath }/student/studentTestPaper?testNo=${testNo}&studentNo=${studentNo}" method="post">
 		<table border="1">
 			<c:forEach var="q" items="${list }" >
-				<input type="hidden" name="questionNo" value="${q.questionNo}">
+				
+				<input type="hidden" name="studentNo" value="${studentNo}">
 				<tr>
-					<td>${q.questionIdx}</td>
+					<td><input type="text" name="questionNo${q.questionIdx}" value="${q.questionNo}">${q.questionIdx} </td>
 					<td>${q.questionTitle}</td>
 				</tr>
 				<tr>
 					<td>보기</td>
 					<td>
-						1) ${q.exampleIdx1} <input type="text" value="${q.answer1 }"><input type="radio" name="choice${q.questionIdx}" value="${q.answer1 }"><br>
-						2) ${q.exampleIdx2} <input type="text" value="${q.answer2 }"><input type="radio" name="choice${q.questionIdx}" value="${q.answer2 }"><br>
-						3) ${q.exampleIdx3} <input type="text" value="${q.answer3 }"><input type="radio" name="choice${q.questionIdx}" value="${q.answer3 }"><br>
-						4) ${q.exampleIdx4} <input type="text" value="${q.answer4 }"><input type="radio" name="choice${q.questionIdx}" value="${q.answer4 }"><br>
+						1) ${q.exampleIdx1} <input type="text" value="${q.answer1 }"><input type="radio" name="choice${q.questionIdx}" value="1"><br>
+						2) ${q.exampleIdx2} <input type="text" value="${q.answer2 }"><input type="radio" name="choice${q.questionIdx}" value="2"><br>
+						3) ${q.exampleIdx3} <input type="text" value="${q.answer3 }"><input type="radio" name="choice${q.questionIdx}" value="3"><br>
+						4) ${q.exampleIdx4} <input type="text" value="${q.answer4 }"><input type="radio" name="choice${q.questionIdx}" value="4"><br>
 					</td>
 				</tr>	
 				

@@ -163,7 +163,7 @@ public class TeacherController {
 		}
 		
 		int row = teacherService.addQuestion(question);
-		
+		int questionTotal = teacherService.questionTotalCount(testNo);
 		if(row == 0)
 		{
 			model.addAttribute("errorMsg", "실패");
@@ -184,7 +184,7 @@ public class TeacherController {
 		}
 		
 		int row = teacherService.addTest(test);
-		
+	
 		if(row == 0)
 		{
 			model.addAttribute("errorMsg", "실패");
@@ -225,24 +225,12 @@ public class TeacherController {
 		
 		log.debug(searchWord+"<---searchWord");
 		
-		int questionTotalCount = teacherService.questionTotalCount(searchWord, testNo);
-		int endPage = (int)(Math.ceil(currentPage / 10.0)) * 10; //페이징 버튼의 끝
-		int startPage = endPage - 9; //페이징 버튼의 시작
-		int firstPage = 1;
-		int lastPage = (int)(Math.ceil(questionTotalCount * 1.0/rowPerPage));
-		if(lastPage < endPage )
-		{
-			endPage = lastPage;
-		}
 		
 		List<Question> list = teacherService.getQuestionList(currentPage,rowPerPage,searchWord,testNo);
+		int questionTotalCount = teacherService.questionTotalCount(testNo);
 		//request.setAttribute("list", list);
 		model.addAttribute("list",list);
 		model.addAttribute("currentPage",currentPage);
-		model.addAttribute("endPage",endPage);
-		model.addAttribute("startPage",startPage);
-		model.addAttribute("firstPage",firstPage);
-		model.addAttribute("lastPage",lastPage);
 		model.addAttribute("searchWord",searchWord);
 		model.addAttribute("testNo",testNo);
 		model.addAttribute("questionTotalCount",questionTotalCount);

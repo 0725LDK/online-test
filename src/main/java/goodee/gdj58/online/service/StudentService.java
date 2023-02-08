@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import goodee.gdj58.online.mapper.StudentMapper;
 import goodee.gdj58.online.vo.Example;
+import goodee.gdj58.online.vo.Paper;
 import goodee.gdj58.online.vo.Question;
 import goodee.gdj58.online.vo.Student;
 import goodee.gdj58.online.vo.Test;
@@ -19,6 +20,18 @@ import goodee.gdj58.online.vo.Test;
 public class StudentService {
 
 	@Autowired private StudentMapper studentMapper;
+	//학생 시험 점수
+	public int studentTestScore(int studentNo)
+	{
+		return studentMapper.studentTestScore(studentNo);
+	}
+	
+	//학생 시험 제출답안
+	public int studentTestPaper(Paper paper)
+	{
+		return studentMapper.studentTestPaper(paper);
+	}
+	
 	//학생 문제별 보기 리스트
 	public List<Map<String, Object>> getExampleList(int testNo)
 	{
@@ -52,7 +65,7 @@ public class StudentService {
 	}
 	
 	//학생 시험 리스트
-	public List<Test> getTestList(int currentPage, int rowPerPage, String searchWord)
+	public List<Map<String,Object>> getTestList(int currentPage, int rowPerPage, String searchWord)
 	{
 		int beginRow = (currentPage - 1) * rowPerPage;
 		Map<String, Object> paramMap = new HashMap<String, Object>();

@@ -31,10 +31,15 @@
 				</td>
 				<td>${t.testDate}</td>
 				<td>
-					<a href="${pageContext.request.contextPath }/student/studentQuestionList?testNo=${t.testNo}&studentNo=${loginStudent.studentNo}">응시</a>
+					<c:if test="${t.score == 0}">
+						<a href="${pageContext.request.contextPath }/student/studentQuestionList?testNo=${t.testNo}&studentNo=${loginStudent.studentNo}">응시</a>
+					</c:if>
+					<c:if test="${t.score != 0 }">
+						불가
+					</c:if>
 				</td>
 				<td>
-					
+					${t.score }
 				</td>
 			</tr>	
 		</c:forEach>
