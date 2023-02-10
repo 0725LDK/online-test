@@ -45,37 +45,31 @@
 		</c:forEach>
 	</table>
 	
-	<!-- 페이징 -->
-	<div>
-		<c:if test="${currentPage == 1 }">
-			<span>처음으로</span>
-		</c:if>
-		<c:if test="${currentPage != 1 }">
-			<a href="${pageContext.request.contextPath }/teacher/teacherTestList?currentPage=1&searchWord=${searchWord}">처음으로</a>
-		</c:if>
-		<c:if test="${startPage <= 10}">
-			<span>이전 10페이지</span>
-		</c:if>
-		<c:if test="${startPage > 1}">
-			<a href="${pageContext.request.contextPath }/teacher/teacherTestList?currentPage=${startPage-10}&searchWord=${searchWord}">이전 10페이지</a>
-		</c:if>
-			
-		<c:forEach var="i" begin="${startPage }" end="${endPage }" step="1">
-			<a href="${pageContext.request.contextPath }/teacher/teacherTestList?currentPage=${i}">${i}</a>
+	<h2>Exfired Test</h2>
+	<table border="1">
+		<tr>
+			<td>시험 번호</td>
+			<td>시험 제목</td>
+			<td>시험 일자</td>
+			<td>응시</td>
+			<td>점수</td>
+		</tr>
+		<c:forEach var="et" items="${endList }" varStatus="status">
+		
+			<tr>
+				<td>${et.testNo}</td>
+				<td>
+					${et.testTitle}
+				</td>
+				<td>${et.testDate}</td>
+				<td>
+					불가
+				</td>
+				<td>
+					${et.score }
+				</td>
+			</tr>	
 		</c:forEach>
-			
-		<c:if test="${endPage - startPage < 9 }">
-			<span>다음 10페이지</span>
-		</c:if>
-		<c:if test="${currentPage==lastPage}">
-			<span>끝으로</span>
-		</c:if>
-		<c:if test="${endPage - startPage == 9 }">
-			<a href="${pageContext.request.contextPath }/teacher/teacherTestList?currentPage=${startPage+10}&searchWord=${searchWord}">다음 10페이지</a>
-		</c:if>		
-		<c:if test="${currentPage < lastPage }">
-			<a href="${pageContext.request.contextPath }/teacher/teacherTestList?currentPage=${lastPage}&searchWord=${searchWord}">끝으로</a>
-		</c:if>
-	</div><br><br>
+	</table>
 </body>
 </html>

@@ -76,6 +76,18 @@ public class StudentService {
 		return studentMapper.selectTestList(paramMap);
 	}
 	
+	//학생 끝난 시험 리스트
+	public List<Map<String,Object>> getEndTestList(int currentPage, int rowPerPage, String searchWord)
+	{
+		int beginRow = (currentPage - 1) * rowPerPage;
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("beginRow", beginRow);
+		paramMap.put("rowPerPage", rowPerPage);
+		paramMap.put("searchWord", searchWord);
+		
+		return studentMapper.selectEndTestList(paramMap);
+	}
+	
 	//학생 로그인
 	public Student login (Student student)
 	{

@@ -14,7 +14,7 @@
 	</div>
 	
 	<h1>Teacher List</h1>
-	<a href="${pageContext.request.contextPath }/teacher/addTeacher">강사등록</a>
+	<a href="${pageContext.request.contextPath }/employee/teacher/addTeacher">강사등록</a>
 	<table>
 		<tr>
 			<td>강사 ID</td>
@@ -27,12 +27,12 @@
 				<td>${t.teacherId }</td>
 				<td>${t.teacherName }</td>
 				<td>
-					<a href="${pageContext.request.contextPath }/teacher/removeTeacher?teacherNo=${t.teacherNo}">삭제</a>
+					<a href="${pageContext.request.contextPath }/employee/teacher/removeTeacher?teacherNo=${t.teacherNo}">삭제</a>
 				</td>
 			</tr>	
 		</c:forEach>
 	</table>
-	<form action="${pageContext.request.contextPath }/teacher/teacherList" method="get">
+	<form action="${pageContext.request.contextPath }/employee/teacher/teacherList" method="get">
 		<input type="text" name="searchWord">
 		<button type="submit">이름 검색</button>
 	</form>

@@ -143,8 +143,10 @@ public class StudentController {
 		
 		
 		List<Map<String,Object>> list = studentService.getTestList(currentPage,rowPerPage,searchWord);
+		List<Map<String,Object>> endList = studentService.getEndTestList(currentPage,rowPerPage,searchWord);
 		//request.setAttribute("list", list);
 		model.addAttribute("list",list);
+		model.addAttribute("endList",endList);
 		model.addAttribute("currentPage",currentPage);
 		model.addAttribute("endPage",endPage);
 		model.addAttribute("startPage",startPage);

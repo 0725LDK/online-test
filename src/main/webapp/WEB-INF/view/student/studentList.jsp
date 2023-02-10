@@ -14,7 +14,7 @@
 	</div>
 	
 	<h1>Student List</h1>
-	<a href="${pageContext.request.contextPath }/student/addStudent">학생등록</a>
+	<a href="${pageContext.request.contextPath }/employee/student/addStudent">학생등록</a>
 	<table>
 		<tr>
 			<td>학생 ID</td>
@@ -33,7 +33,7 @@
 		</c:forEach>
 	</table>
 	
-	<form action="${pageContext.request.contextPath }/student/studentList" method="get">
+	<form action="${pageContext.request.contextPath }/employee/student/studentList" method="get">
 		<input type="text" name="searchWord">
 		<button type="submit">이름 검색</button>
 	</form>

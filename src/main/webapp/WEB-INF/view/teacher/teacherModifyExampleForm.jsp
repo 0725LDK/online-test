@@ -45,7 +45,7 @@
 			</tr>
 			
 		</table><br>
-		<button type="submit">시험 수정</button>
+		<button type="submit">보기 수정</button>
 	</form>
 	
 </body>

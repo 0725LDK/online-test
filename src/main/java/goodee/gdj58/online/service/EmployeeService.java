@@ -18,7 +18,39 @@ import goodee.gdj58.online.vo.Teacher;
 @Transactional
 public class EmployeeService {
 	//DI  = new EmployeeMapper()
-	@Autowired private EmployeeMapper employeeMapper;
+	@Autowired EmployeeMapper employeeMapper;
+	
+	//학생 등록시 ID 중복체크
+	public String getStudentId(String studentId)
+	{
+		String resultStr = "NO";
+		if(employeeMapper.selectStudentId(studentId) == null)
+		{
+			resultStr = "YES";
+		}
+		return resultStr;
+	}
+	//강사 등록시 ID 중복체크
+	public String getTeacherId(String teacherId)
+	{
+		String resultStr = "NO";
+		if(employeeMapper.selectTeacherId(teacherId) == null)
+		{
+			resultStr = "YES";
+		}
+		return resultStr;
+	}
+	//직원 등록시 ID 중복체크
+	public String getEmployeeId(String empId)
+	{
+		String resultStr = "NO";
+		if(employeeMapper.selectEmpId(empId) == null)
+		{
+			resultStr = "YES";
+		}
+		return resultStr;
+	}
+	
 	//학생 삭제
 	public int removeStudent(int studentNo)
 	{
@@ -35,12 +67,13 @@ public class EmployeeService {
 		return employeeMapper.studentTotalCount(searchWord);
 	}
 	//학생 리스트
-	public List<Student> getStudentList(int currentPage, int rowPerPage)
+	public List<Student> getStudentList(int currentPage, int rowPerPage,String searchWord)
 	{
 		int beginRow = (currentPage - 1) * rowPerPage;
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("beginRow", beginRow);
 		paramMap.put("rowPerPage", rowPerPage);
+		paramMap.put("searchWord", searchWord);
 		
 		return employeeMapper.selectStudentList(paramMap);
 	}
@@ -64,12 +97,13 @@ public class EmployeeService {
 	}
 	
 	//강사 리스트
-	public List<Teacher> getTeacherList(int currentPage, int rowPerPage)
+	public List<Teacher> getTeacherList(int currentPage, int rowPerPage, String searchWord)
 	{
 		int beginRow = (currentPage - 1) * rowPerPage;
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("beginRow", beginRow);
 		paramMap.put("rowPerPage", rowPerPage);
+		paramMap.put("searchWord", searchWord);
 		
 		return employeeMapper.selectTeacherList(paramMap);
 	}

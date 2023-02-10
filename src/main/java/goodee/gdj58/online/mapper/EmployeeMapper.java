@@ -12,6 +12,12 @@ import goodee.gdj58.online.vo.Teacher;
 @Mapper
 public interface EmployeeMapper {
 	
+	//학생 추가시 ID 중복 체크
+	public String selectStudentId(String studentId);
+	//강사 추가시 ID 중복 체크
+	public String selectTeacherId(String teacherId);
+	//직원 추가시 ID 중복 체크
+	public String selectEmpId(String empId);
 	
 	//학생 삭제
 	int deleteStudent(int studentNo);

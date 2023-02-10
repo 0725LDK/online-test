@@ -29,6 +29,8 @@ public interface StudentMapper {
 	int testTotalCount(String searchWord);
 	//학생 시험 리스트
 	List<Map<String,Object>> selectTestList(Map<String, Object> paramMap);
+	//학생 끝난시험 리스트
+	List<Map<String,Object>> selectEndTestList(Map<String, Object> paramMap);
 	//학생 로그인
 	Student login(Student student);
 }

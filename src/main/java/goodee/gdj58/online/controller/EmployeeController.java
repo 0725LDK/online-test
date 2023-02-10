@@ -38,7 +38,7 @@ public class EmployeeController {
 		}
 		
 		employeeService.removeStudent(studentNo);
-		return "redirect:/student/studentList";
+		return "redirect:/employee/student/studentList";
 	}
 	
 	//학생 입력 폼
@@ -79,7 +79,7 @@ public class EmployeeController {
 			return "student/addStudent";
 		}
 		//row == 1 이면 입력 성공
-		return "redirect:/student/studentList"; //sendRedirect  CM -> C
+		return "redirect:/employee/student/studentList"; //sendRedirect  CM -> C
 	}
 
 	
@@ -107,7 +107,7 @@ public class EmployeeController {
 			endPage = lastPage;
 		}
 		log.debug(lastPage+"<---lastPage");
-		List<Student> list = employeeService.getStudentList(currentPage, rowPerPage);
+		List<Student> list = employeeService.getStudentList(currentPage, rowPerPage,searchWord);
 		//request.setAttribute("list", list);
 		model.addAttribute("list",list);
 		model.addAttribute("currentPage",currentPage);
@@ -131,7 +131,7 @@ public class EmployeeController {
 		}
 		
 		employeeService.removeTeacher(teacherNo);
-		return "redirect:/teacher/teacherList";
+		return "redirect:/employee/teacher/teacherList";
 	}
 	
 	//강사 입력 폼
@@ -172,7 +172,7 @@ public class EmployeeController {
 			return "teacher/addTeacher";
 		}
 		//row == 1 이면 입력 성공
-		return "redirect:/teacher/teacherList"; //sendRedirect  CM -> C
+		return "redirect:/employee/teacher/teacherList"; //sendRedirect  CM -> C
 	}
 
 	//강사 리스트
@@ -198,7 +198,7 @@ public class EmployeeController {
 		{
 			endPage = lastPage;
 		}
-		List<Teacher> list = employeeService.getTeacherList(currentPage, rowPerPage);
+		List<Teacher> list = employeeService.getTeacherList(currentPage, rowPerPage, searchWord);
 		//request.setAttribute("list", list);
 		model.addAttribute("list",list);
 		model.addAttribute("currentPage",currentPage);
