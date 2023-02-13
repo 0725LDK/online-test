@@ -223,7 +223,11 @@ public class EmployeeController {
 	{
 		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
 		
-		employeeService.updateEmployeePw(loginEmp.getEmpNo() , oldPw, newPw);
+		int row = employeeService.updateEmployeePw(loginEmp.getEmpNo() , oldPw, newPw);
+		if(row == 0)
+		{
+			return "employee/modifyEmpPw";
+		}
 		return "redirect:/employee/empList";
 	}
 	

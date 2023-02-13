@@ -1,6 +1,6 @@
 package goodee.gdj58.online.controller;
 
-import java.util.List;
+import java.util.List;	
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -13,12 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import goodee.gdj58.online.service.StudentService;
-import goodee.gdj58.online.vo.Example;
 import goodee.gdj58.online.vo.Paper;
-import goodee.gdj58.online.vo.Question;
+import goodee.gdj58.online.vo.Score;
 import goodee.gdj58.online.vo.Student;
-import goodee.gdj58.online.vo.Teacher;
-import goodee.gdj58.online.vo.Test;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -26,16 +23,62 @@ import lombok.extern.slf4j.Slf4j;
 public class StudentController {
 	@Autowired StudentService studentService;
 	
-	//학생 시험 점수
-	@GetMapping("/student/studentTestPaper")
-	public String studentTestPaper(HttpSession session, Model model
+	//pw 수정 폼
+	@GetMapping("/student/studentModifyPw")
+	public String modifyStudentPw()
+	{
+		
+		return "student/studentModifyPw";
+	}
+	//pw 수정 액션
+	@PostMapping("/student/studentModifyPw")
+	public String modifyStudentPw(HttpSession session, @RequestParam(value = "oldPw") String oldPw, @RequestParam(value = "newPw") String newPw)
+	{
+		Student loginStudent = (Student)session.getAttribute("loginStudent");
+		
+		int row = studentService.updateStudentPw(loginStudent.getStudentNo() , oldPw, newPw);
+		if(row==0)
+		{
+			return "student/studentModifyPw";
+		}
+		return "redirect:/student/studentTestList";
+	}
+	
+	/*
+	 * //학생 시험 점수
+	 * 
+	 * @GetMapping("/student/studentTestPaper") public String
+	 * studentTestPaper(HttpSession session, Model model ,@RequestParam(value =
+	 * "studentNo") int studentNo ,@RequestParam(value = "testNo") int testNo ) {
+	 * log.debug("학생시험점수 컨트롤러"); int testScore =
+	 * studentService.studentCalScore(studentNo); Score score = new Score();
+	 * score.setTestNo(testNo); score.setStudentNo(studentNo);
+	 * score.setScore(testScore); studentService.studentAddScore(score);
+	 * 
+	 * model.addAttribute("score",score); return
+	 * "/student/studentTestList?studentNo="+studentNo; }
+	 */
+	//학생 시험 점수 계산 및 저장
+	@GetMapping("student/studentCalScore")
+	public String studentCalScore(HttpSession session, Model model
 									,@RequestParam(value = "studentNo") int studentNo
+									,@RequestParam(value = "testNo") int testNo
 									)
 	{
-		int score = studentService.studentTestScore(studentNo);
-		model.addAttribute("score",score);
-		return "/student/studentTestList?studentNo="+studentNo;
+		int testScore = studentService.studentCalScore(studentNo);
+		
+		Score score = new Score();
+		score.setTestNo(testNo);
+		score.setStudentNo(studentNo);
+		score.setScore(testScore);
+		
+		studentService.studentAddScore(score);
+		log.debug("학생 시험 점수 계산 및 저장 컨트롤러");
+		
+		return"redirect:/student/studentTestList";
 	}
+	
+	
 	
 	//학생 문제 제출 답안
 	@PostMapping("/student/studentTestPaper")
@@ -46,6 +89,7 @@ public class StudentController {
 									,@RequestParam(value = "choice4", defaultValue = "5") int answer4 
 									,@RequestParam(value = "choice5", defaultValue = "5") int answer5 
 									,@RequestParam(value = "studentNo") int studentNo
+									,@RequestParam(value = "testNo") int testNo
 									,@RequestParam(value = "questionNo1",defaultValue = "") int questionNo1
 									,@RequestParam(value = "questionNo2",defaultValue = "") int questionNo2
 									,@RequestParam(value = "questionNo3",defaultValue = "") int questionNo3
@@ -53,6 +97,9 @@ public class StudentController {
 									,@RequestParam(value = "questionNo5",defaultValue = "") int questionNo5
 									)
 	{
+		
+		
+		
 		int[] answer = {answer1,answer2,answer3,answer4,answer5};
 		int[] question = {questionNo1,questionNo2,questionNo3,questionNo4,questionNo5};
 		int j=0;
@@ -66,9 +113,10 @@ public class StudentController {
 				j++;
 			}
 		}
-	
+		log.debug("학생제줄답안 컨트롤러");
 		model.addAttribute("studentNo", studentNo);
-		return "redirect:/student/studentTestList";
+		model.addAttribute("testNo", testNo);
+		return "redirect:/student/studentCalScore?testNo="+testNo+"&studentNo="+studentNo;
 	}
 	
 	//학생 시험별 문제 리스트
@@ -130,8 +178,6 @@ public class StudentController {
 		
 		studentNo = loginStudent.getStudentNo();
 		int testTotalCount = studentService.testTotalCount(searchWord);
-		int score = studentService.studentTestScore(studentNo);
-		model.addAttribute("score",score);
 		int endPage = (int)(Math.ceil(currentPage / 10.0)) * 10; //페이징 버튼의 끝
 		int startPage = endPage - 9; //페이징 버튼의 시작
 		int firstPage = 1;
@@ -142,7 +188,7 @@ public class StudentController {
 		}
 		
 		
-		List<Map<String,Object>> list = studentService.getTestList(currentPage,rowPerPage,searchWord);
+		List<Map<String,Object>> list = studentService.getTestList(currentPage,rowPerPage,searchWord,studentNo);
 		List<Map<String,Object>> endList = studentService.getEndTestList(currentPage,rowPerPage,searchWord);
 		//request.setAttribute("list", list);
 		model.addAttribute("list",list);
@@ -153,7 +199,6 @@ public class StudentController {
 		model.addAttribute("firstPage",firstPage);
 		model.addAttribute("lastPage",lastPage);
 		model.addAttribute("searchWord",searchWord);
-		model.addAttribute("score",score);
 		return "student/studentTestList";
 	}
 	
