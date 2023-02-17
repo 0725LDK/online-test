@@ -19,8 +19,9 @@
 			<c:forEach var="q" items="${list }" >
 				
 				<input type="hidden" name="studentNo" value="${studentNo}">
+				<input type="hidden" name="questionNo${q.questionIdx}" value="${q.questionNo}">
 				<tr>
-					<td><input type="text" name="questionNo${q.questionIdx}" value="${q.questionNo}">${q.questionIdx} </td>
+					<td>Q${q.questionIdx} </td>
 					<td>${q.questionTitle}</td>
 				</tr>
 				<tr>
@@ -34,7 +35,7 @@
 				</tr>	
 				
 			</c:forEach>
-		</table>
+		</table><br>
 		<button type="submit">제출</button>
 	</form>
 	

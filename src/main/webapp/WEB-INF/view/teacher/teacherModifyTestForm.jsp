@@ -12,7 +12,6 @@
 	<!-- 강사 선택 메뉴 -->
 	<c:import url="/WEB-INF/view/teacher/inc/teacherMenu.jsp"></c:import><br>
 	
-	<a href="${pageContext.request.contextPath }/teacher/addQuestion">시험등록</a>
 	<a href="${pageContext.request.contextPath }/teacher/teacherTestList">시험목록으로</a>
 	
 	<!-- 시험 수정 -->

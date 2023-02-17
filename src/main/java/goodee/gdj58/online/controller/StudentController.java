@@ -65,7 +65,8 @@ public class StudentController {
 									,@RequestParam(value = "testNo") int testNo
 									)
 	{
-		int testScore = studentService.studentCalScore(studentNo);
+		
+		int testScore = studentService.studentCalScore(studentNo,testNo);
 		
 		Score score = new Score();
 		score.setTestNo(testNo);
@@ -162,14 +163,10 @@ public class StudentController {
 	//학생 시험 리스트
 	@GetMapping("/student/studentTestList")
 	public String testList(HttpSession session, Model model, 
-							@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
-							@RequestParam(value = "rowPerPage", defaultValue = "10") int rowPerPage,
-							@RequestParam(value = "searchWord", defaultValue = "") String searchWord,
 							@RequestParam(value = "studentNo", defaultValue = "0") int studentNo
 							)//int currentPage = Integer.parseInt(request.getParamenter("currentPage"));
 		{
 		
-		log.debug(searchWord+"<---searchWord");
 		Student loginStudent = (Student)session.getAttribute("loginStudent");
 		if(loginStudent == null)
 		{
@@ -177,28 +174,12 @@ public class StudentController {
 		}
 		
 		studentNo = loginStudent.getStudentNo();
-		int testTotalCount = studentService.testTotalCount(searchWord);
-		int endPage = (int)(Math.ceil(currentPage / 10.0)) * 10; //페이징 버튼의 끝
-		int startPage = endPage - 9; //페이징 버튼의 시작
-		int firstPage = 1;
-		int lastPage = (int)(Math.ceil(testTotalCount * 1.0/rowPerPage));
-		if(lastPage < endPage )
-		{
-		endPage = lastPage;
-		}
 		
-		
-		List<Map<String,Object>> list = studentService.getTestList(currentPage,rowPerPage,searchWord,studentNo);
-		List<Map<String,Object>> endList = studentService.getEndTestList(currentPage,rowPerPage,searchWord);
+		List<Map<String,Object>> list = studentService.getTestList(studentNo);
+		List<Map<String,Object>> endList = studentService.getEndTestList(studentNo);
 		//request.setAttribute("list", list);
 		model.addAttribute("list",list);
 		model.addAttribute("endList",endList);
-		model.addAttribute("currentPage",currentPage);
-		model.addAttribute("endPage",endPage);
-		model.addAttribute("startPage",startPage);
-		model.addAttribute("firstPage",firstPage);
-		model.addAttribute("lastPage",lastPage);
-		model.addAttribute("searchWord",searchWord);
 		return "student/studentTestList";
 	}
 	

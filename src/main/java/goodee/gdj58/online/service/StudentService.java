@@ -55,10 +55,12 @@ public class StudentService {
 	
 	
 	//학생 시험 점수 계산
-	public int studentCalScore(int studentNo)
+	public int studentCalScore(int studentNo, int testNo)
 	{
-		
-		return studentMapper.studentCalScore(studentNo);
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("studentNo", studentNo);
+		paramMap.put("testNo", testNo);
+		return studentMapper.studentCalScore(paramMap);
 	}
 	
 	
@@ -103,28 +105,17 @@ public class StudentService {
 	}
 	
 	//학생 시험 리스트
-	public List<Map<String,Object>> getTestList(int currentPage, int rowPerPage, String searchWord, int studentNo)
+	public List<Map<String,Object>> getTestList(int studentNo)
 	{
-		int beginRow = (currentPage - 1) * rowPerPage;
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("beginRow", beginRow);
-		paramMap.put("rowPerPage", rowPerPage);
-		paramMap.put("searchWord", searchWord);
-		paramMap.put("studentNo", studentNo);
 		
-		return studentMapper.selectTestList(paramMap);
+		return studentMapper.selectTestList(studentNo);
 	}
 	
 	//학생 끝난 시험 리스트
-	public List<Map<String,Object>> getEndTestList(int currentPage, int rowPerPage, String searchWord)
+	public List<Map<String,Object>> getEndTestList(int studentNo)
 	{
-		int beginRow = (currentPage - 1) * rowPerPage;
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("beginRow", beginRow);
-		paramMap.put("rowPerPage", rowPerPage);
-		paramMap.put("searchWord", searchWord);
 		
-		return studentMapper.selectEndTestList(paramMap);
+		return studentMapper.selectEndTestList(studentNo);
 	}
 	
 	//학생 로그인

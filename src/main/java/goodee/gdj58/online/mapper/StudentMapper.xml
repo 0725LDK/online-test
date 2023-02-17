@@ -15,8 +15,8 @@
 	</insert>
 	
 	<!-- 학생시험 점수 계산 -->
-	<select id="studentCalScore" parameterType="int" resultType="int">
-		SELECT sum(b.score*10) score	
+	<select id="studentCalScore" parameterType="java.util.Map" resultType="int">
+		SELECT if(b.score IS NULL,0,sum(b.score)*10) score	
 		FROM 
 			(SELECT a.exampleIdx exampleIdx
 					, a.answer answer
@@ -40,10 +40,9 @@
 					
 				WHERE pa.student_no = #{studentNo}
 				)a
-			WHERE a.exampleOx = '정답'
+			WHERE a.exampleOx = '정답' AND a.testNo = #{testNo}
 			)b
-		WHERE b.score=1
-		GROUP BY b.score
+		
 	</select>
 	<!-- 학생 시험 점수
 	<select id="studentTestScore" parameterType="int" resultType="int">
@@ -148,55 +147,30 @@
 	
 	<!-- 학생 시험 리스트 -->
 	<select id="selectTestList" resultType="java.util.Map" parameterType="java.util.Map">
-SELECT a.testNo
-	, a.testTitle
-	, a.testDate
-	, MAX(if(a.studentNo = #{studentNo}, a.score, 0)) score
-FROM (SELECT te.test_no testNo
-			, te.test_title testTitle
-			, te.test_date testDate
-			, if(sc.student_no IS NULL, 0, sc.student_no) studentNo
-			, if(sc.score IS NULL,0,sc.score) score
-FROM test te 
-	LEFT OUTER JOIN score sc ON te.test_no = sc.test_no) a
-GROUP BY testNo
-ORDER BY testNo
+		SELECT a.testNo
+			, a.testTitle
+			, a.testDate
+			, MAX(if(a.studentNo = #{studentNo}, a.score, 0)) score
+		FROM (SELECT te.test_no testNo
+					, te.test_title testTitle
+					, te.test_date testDate
+					, if(sc.student_no IS NULL, 0, sc.student_no) studentNo
+					, if(sc.score IS NULL,0,sc.score) score
+				FROM test te 
+					LEFT OUTER JOIN score sc ON te.test_no = sc.test_no) a
+		WHERE a.testDate >= CURDATE()
+		GROUP BY testNo
+		ORDER BY testNo
 	</select>
 	<!-- 학생 끝난시험 리스트 -->
-	<select id="selectEndTestList" resultType="java.util.Map" parameterType="java.util.Map">
-		SELECT b.testNo testNo
-				, b.testTitle testTitle
-				, b.testDate testDate
-				, SUM(score*10) score
-		FROM 
-			(SELECT a.testNo testNo
-					, a.testTitle testTitle
-					, a.testDate testDate
-					, a.questionIdx questionIdx
-					, a.exampleIdx exampleIdx
-					, a.exampleOx exampleOx
-					, a.answer answer		
-					, if(exampleIdx=answer,1,0) score
-			FROM 
-				(SELECT te.test_no testNo
-						, te.test_title testTitle
-						, te.test_date testDate
-						, qu.question_idx questionIdx
-						, qu.question_title questionTitle
-						, ex.example_idx exampleIdx
-						, ex.example_title exampleTitle
-						, ex.example_ox exampleOx
-						, if(pa.answer IS NULL ,0,pa.answer) answer
-				FROM question qu
-					INNER JOIN example ex ON qu.question_no = ex.question_no
-					LEFT outer JOIN paper pa ON ex.question_no = pa.question_no
-					INNER JOIN test te ON qu.test_no = te.test_no
-				)a
-			WHERE exampleOx = '정답'
-			)b	
-		WHERE testDate &#60; CURDATE()
-		GROUP BY testNo
-		LIMIT #{beginRow}, #{rowPerPage}
+	<select id="selectEndTestList" resultType="java.util.Map" parameterType="int">
+		SELECT te.test_no testNo
+				, te.test_title testTitle
+				, te.test_date testDate
+				, sc.score score
+		FROM test te
+			INNER JOIN score sc ON te.test_no = sc.test_no
+		WHERE te.test_date &#60;= CURDATE() AND sc.student_no = #{studentNo}
 	</select>
 	
 	

@@ -21,7 +21,7 @@ public interface StudentMapper {
 	//학생 점수 score 테이블에 저장
 	int studentAddScore(Score score);
 	//학생 시험 점수 계산
-	int studentCalScore(int studentNo);
+	int studentCalScore(Map<String, Object> paramMap);
 	//학생 문제 제출 답안
 	int studentTestPaper(Paper paper);
 	//학생 문제별 보기 리스트
@@ -33,9 +33,9 @@ public interface StudentMapper {
 	//학생 시험 총 수
 	int testTotalCount(String searchWord);
 	//학생 시험 리스트
-	List<Map<String,Object>> selectTestList(Map<String, Object> paramMap);
+	List<Map<String,Object>> selectTestList(int studentNo);
 	//학생 끝난시험 리스트
-	List<Map<String,Object>> selectEndTestList(Map<String, Object> paramMap);
+	List<Map<String,Object>> selectEndTestList(int studentNo);
 	//학생 로그인
 	Student login(Student student);
 }
