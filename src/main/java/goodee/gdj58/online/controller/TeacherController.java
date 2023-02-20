@@ -2,6 +2,7 @@ package goodee.gdj58.online.controller;
 
 import java.awt.Dialog.ModalExclusionType;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import goodee.gdj58.online.service.IdService;
 import goodee.gdj58.online.service.TeacherService;
+import goodee.gdj58.online.vo.AvgScore;
 import goodee.gdj58.online.vo.Employee;
 import goodee.gdj58.online.vo.Example;
 import goodee.gdj58.online.vo.Question;
@@ -26,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class TeacherController {
 
 	@Autowired TeacherService teacherService;
+	
 	//강사 보기 수정 폼
 	@GetMapping("/teacher/teacherModifyExample")
 	public String modifyExample(HttpSession session, Model model, @RequestParam(value = "exampleTitle") String exampleTitle
@@ -257,7 +260,6 @@ public class TeacherController {
 		{
 		endPage = lastPage;
 		}
-		
 		
 		List<Test> list = teacherService.getTestList(currentPage,rowPerPage,searchWord);
 		//request.setAttribute("list", list);

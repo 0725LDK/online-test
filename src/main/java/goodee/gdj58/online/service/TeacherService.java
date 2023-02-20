@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import goodee.gdj58.online.mapper.TeacherMapper;
+import goodee.gdj58.online.vo.AvgScore;
 import goodee.gdj58.online.vo.Employee;
 import goodee.gdj58.online.vo.Example;
 import goodee.gdj58.online.vo.Question;
@@ -19,6 +20,12 @@ import goodee.gdj58.online.vo.Test;
 @Transactional
 public class TeacherService {
 	@Autowired private TeacherMapper teacherMapper;
+	
+	public List<AvgScore> getTestAvgScore()
+	{
+		return teacherMapper.selectTestAvgScore();
+	}
+	
 	//강사 보기 수정
 	public int updateExample(String exampleTitle, int exampleNo, String exampleOx)
 	{

@@ -5,6 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <title> </title>
 
 </head>
@@ -46,6 +48,17 @@
 			</tr>	
 
 		</c:forEach>
+	</table>
+	
+	<table>
+		<c:forEach var="s" items="${avgList }">
+		
+		<tr>
+			<td>${s.testTitle }</td>
+			<td>${s.avgScore }</td>
+		</tr>
+		</c:forEach>
+		
 	</table>
 	
 	<!-- 페이징 -->
@@ -97,6 +110,66 @@
 		<button type="submit">시험 등록</button>
 	</form>
 	
+	<!-- 차트 -->
+	<canvas id="myChart" style="width:100%;max-width:600px"></canvas>
 	
 </body>
+
+<!-- 차트 모델 값을 가져오는 코드 -->
+<script>
+	//모델 데이터를 가져온 후에 아래 차트가 그려져야한다 -> 동기로 처리해야한다
+	//async 값을 false로 변경
+	let xModel = []; //키 배열
+	let yModel = []; //값 배열
+	let barColorsModel = ['#F29661','#E5D85C','#86E57F','#6799FF'];//갯수가 모자르면 회색으로 채움 
+	$.ajax({
+		async:false //동기처리
+		,url : '/online_test/teacher/teacherTestAvgScore'
+		,type : 'get'
+		,success : function(model){ //모델: /restApi/monthData 백엔드에서 객체로 변환 -> 변환이 필요
+			for(let attr in model)//attr에는 키(속성)값 {1:500, 2:400 ...}
+				{
+					xModel.push(attr); //1,2, ...
+					yModel.push(model[attr]); //500, 400, ...
+				}
+		}
+	});
+</script>
+
+<!-- 차트를 그리는 코드 -->
+<script>
+	var xValues = xModel;
+	var yValues = yModel;
+	var barColors = barColorsModel;
+	
+	new Chart("myChart", {
+	  type: "bar",
+	  data: {
+	    labels: xValues,
+	    datasets: [{
+	      backgroundColor: barColors,
+	      data: yValues
+	    }]
+	  },
+	  options: {
+	    legend: {display: false},
+	    title: {
+	      display: true,
+	      text: "시험별 평균"
+	    },
+	    
+	    scales : {
+			yAxes : [ {
+				ticks : {
+					beginAtZero : true, // 0부터 시작하게 합니다.
+					stepSize: 10,   // 1 씩 증가하도록 설정합니다.
+					max:50
+				}
+			} ]
+		}
+
+
+	  }
+	});
+</script>
 </html>

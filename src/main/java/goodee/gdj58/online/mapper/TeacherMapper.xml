@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.online.mapper.TeacherMapper">
 	
+	<!-- 강사 시험별 평균 보기  -->
+	<select id="selectTestAvgScore" resultType="goodee.gdj58.online.vo.AvgScore">
+		SELECT te.test_no,te.test_title testTitle, CAST(AVG(sc.score) AS INT) avgScore
+		FROM score sc
+			INNER JOIN test te ON sc.test_no = te.test_no
+		GROUP BY sc.test_no
+		ORDER BY sc.test_no ASC 
+	</select>
+	
 	<!-- 강사 보기 수정 -->
 	<update id="updateExample" parameterType="java.util.Map">
 		UPDATE example

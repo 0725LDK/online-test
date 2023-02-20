@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import goodee.gdj58.online.vo.AvgScore;
 import goodee.gdj58.online.vo.Example;
 import goodee.gdj58.online.vo.Question;
 import goodee.gdj58.online.vo.Teacher;
@@ -12,6 +13,9 @@ import goodee.gdj58.online.vo.Test;
 
 @Mapper
 public interface TeacherMapper {
+	
+	//강사 시험 평균 보기
+	List<AvgScore> selectTestAvgScore ();
 	
 	//강사 보기 수정
 	int updateExample(Map<String, Object> paramMap);
