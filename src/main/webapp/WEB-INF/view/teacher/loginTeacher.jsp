@@ -14,7 +14,7 @@
 	<!-- Link & script -->
 	<jsp:include page="/inc/HTMLHead.jsp"></jsp:include>
 
-<title>LOGIN</title>
+<title>Teacher LOGIN</title>
 </head>
 <body>
 
@@ -26,7 +26,7 @@
 					<!-- Register -->
 					<div class="card">
 						<div class="card-body">
-							<h4 class="mb-2">LOGIN</h4><br>
+							<h4 class="mb-2">Teacher LOGIN</h4><br>
 							<!-- 로그인 선택 메뉴 -->
 							<c:import url="/WEB-INF/view/employee/inc/loginMenu.jsp"></c:import><br>
 						
