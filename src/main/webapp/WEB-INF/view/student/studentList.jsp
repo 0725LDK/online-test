@@ -51,7 +51,7 @@
 							<td>${s.studentId }</td>
 							<td>${s.studentName }</td>
 							<td>
-								<a href="${pageContext.request.contextPath }/student/removeStudent?studentNo=${s.studentNo}">삭제</a>
+								<a href="${pageContext.request.contextPath }/employee/student/removeStudent?studentNo=${s.studentNo}">삭제</a>
 							</td>
 						</tr>	
 					</c:forEach>

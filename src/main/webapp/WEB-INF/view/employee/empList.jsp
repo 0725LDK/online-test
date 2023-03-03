@@ -17,7 +17,7 @@
 </head>
 <body>
 	<div class="container-xxl flex-grow-1 container-p-y">
-		<h1>직원 리스트</h1>
+		<h1>사원 리스트</h1>
 		<span>
 			<a class="btn rounded-pill btn-primary" href="${pageContext.request.contextPath }/employee/empList">사원관리</a>
 			<a class="btn rounded-pill btn-primary" href="${pageContext.request.contextPath }/employee/teacher/teacherList">강사관리</a>
@@ -28,7 +28,7 @@
 		<br><br>
 		<!-- Hoverable Table rows -->
 			<div class="card">
-				<h5 class="card-header">직원 리스트 [<a href="${pageContext.request.contextPath }/employee/addEmp">직원등록</a>]</h5>
+				<h5 class="card-header">사원 리스트 [<a href="${pageContext.request.contextPath }/employee/addEmp">직원등록</a>]</h5>
 				<span style="text-align:right">
 					<form id="searchForm" action="${pageContext.request.contextPath }/employee/empList" method="get">
 						<span><input id="search" type="text" name="searchWord" placeholder="Search Name"></span>
