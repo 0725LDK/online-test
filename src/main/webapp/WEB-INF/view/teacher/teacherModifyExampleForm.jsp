@@ -2,51 +2,83 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
-<html>
+<html
+  lang="en"
+  class="light-style customizer-hide"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="${pageContext.request.contextPath}/resource/assets/"
+  data-template="vertical-menu-template-free"
+>
 <head>
 <meta charset="UTF-8">
-<title> </title>
+<!-- Link & script -->
+	<jsp:include page="/inc/HTMLHead.jsp"></jsp:include>
+<title> Teacher Example Modify </title>
 </head>
 <body>
-	<h1>Teacher Example Modify</h1>
-	<!-- 강사 선택 메뉴 -->
-	<c:import url="/WEB-INF/view/teacher/inc/teacherMenu.jsp"></c:import><br>
-	
-	<a href="${pageContext.request.contextPath }/teacher/addQuestion">시험등록</a>
-	<a href="${pageContext.request.contextPath }/teacher/teacherTestList">시험목록으로</a>
-	<a href="${pageContext.request.contextPath }/teacher/teacherQuestionList?testNo=${testNo}">문제목록으로</a>
-	
-	<!-- 문제 수정 -->
-	<h2>Modify Example</h2>
-	<form action="${pageContext.request.contextPath }/teacher/teacherModifyExample" method="post">
-		<input type="hidden" name="testNo" value="${testNo }">
-		<input type="hidden" name="exampleNo" value="${exampleNo }">
-		<table border="1">
-			<tr>
-				<td>문제 번호  </td>
-				<td><input type="text" name="questionNo" value="${questionNo}" readonly="readonly"></td>
-			</tr>
-			<tr>
-				<td>보기 번호  </td>
-				<td><input type="text" name="exampleIdx" value="${exampleIdx}" readonly="readonly" ></td>
-			</tr>
-			<tr>
-				<td>보기 내용  </td>
-				<td><input type="text" name="exampleTitle" value="${exampleTitle}" ></td>
-			</tr>
-			<tr>
-				<td>정답/오답  </td>
-				<td>
-					<select name="exampleOx">
-						<option value="정답">정답</option>
-						<option value="오답">오답</option>
-					</select>
-				</td>
-			</tr>
-			
-		</table><br>
-		<button type="submit">보기 수정</button>
-	</form>
-	
+	<div class="container-xxl">
+		<div class="authentication-wrapper authentication-basic container-p-y">
+			<div class="authentication-inner">
+				<!-- Register -->
+				<div class="card">
+					<div class="card-body">
+						<h4 class="mb-2">보기 수정</h4><br>
+					
+						<form action="${pageContext.request.contextPath }/teacher/teacherModifyExample" method="post" class="mb-3" >
+							<input type="hidden" name="testNo" value="${testNo }">
+							<input type="hidden" name="exampleNo" value="${exampleNo }">
+							
+							<div class="mb-3">
+								<label for="email" class="form-label">문제 번호</label>
+								<input
+									class="form-control"
+									type="text" 
+									name="questionNo" value="${questionNo}" readonly="readonly"
+								/>
+							</div>
+
+							<div class="mb-3">
+								<label for="email" class="form-label">보기 번호</label>
+								<input
+									class="form-control"
+									type="text"  
+									name="exampleIdx" value="${exampleIdx}" readonly="readonly"
+								/>
+							</div>
+
+							<div class="mb-3">
+								<label for="email" class="form-label">보기 내용</label>
+								<input
+									class="form-control"
+									type="text"  
+									name="exampleTitle" value="${exampleTitle}"
+								/>
+							</div>
+
+							<div class="mb-3">
+								<label for="email" class="form-label">정답 / 오답</label>
+								<select name="exampleOx">
+									<option value="정답">정답</option>
+									<option value="오답">오답</option>
+								</select>
+							</div>
+							
+							<div class="mb-3">
+								<button class="btn btn-primary d-grid w-100" type="submit">보기 수정</button><br>
+							</div>
+
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Core JS -->
+	<!-- build:js assets/vendor/js/core.js -->
+	<jsp:include page="/inc/coreJS.jsp"></jsp:include>
+
+
 </body>
 </html>

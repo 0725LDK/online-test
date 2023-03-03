@@ -19,6 +19,7 @@ import goodee.gdj58.online.vo.AvgScore;
 import goodee.gdj58.online.vo.Employee;
 import goodee.gdj58.online.vo.Example;
 import goodee.gdj58.online.vo.Question;
+import goodee.gdj58.online.vo.Student;
 import goodee.gdj58.online.vo.Teacher;
 import goodee.gdj58.online.vo.Test;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,27 @@ import lombok.extern.slf4j.Slf4j;
 public class TeacherController {
 
 	@Autowired TeacherService teacherService;
+	
+	//pw 수정 폼
+	@GetMapping("/teacher/modifyTeacherPw")
+	public String modifyTeacherPw()
+	{
+		
+		return "teacher/teacherModifyPw";
+	}
+	//pw 수정 액션
+	@PostMapping("/teacher/modifyTeacherPw")
+	public String modifyTeacherPw(HttpSession session, @RequestParam(value = "oldPw") String oldPw, @RequestParam(value = "newPw") String newPw)
+	{
+		Teacher loginTeacher = (Teacher)session.getAttribute("loginTeacher");
+		
+		int row = teacherService.updateTeacherPw(loginTeacher.getTeacherNo() , oldPw, newPw);
+		if(row==0)
+		{
+			return "teacher/teacherModifyPw";
+		}
+		return "redirect:/teacher/teacherTestList";
+	}
 	
 	//강사 보기 수정 폼
 	@GetMapping("/teacher/teacherModifyExample")

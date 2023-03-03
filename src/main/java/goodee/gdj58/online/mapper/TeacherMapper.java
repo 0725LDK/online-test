@@ -14,6 +14,9 @@ import goodee.gdj58.online.vo.Test;
 @Mapper
 public interface TeacherMapper {
 	
+	//강사 비밀번호 변경
+	int updateTeacherPw(Map<String, Object> paramMap);
+	
 	//강사 시험 평균 보기
 	List<AvgScore> selectTestAvgScore ();
 	

@@ -21,6 +21,20 @@ import goodee.gdj58.online.vo.Test;
 public class TeacherService {
 	@Autowired private TeacherMapper teacherMapper;
 	
+	//강사 비밀번호 변경
+	public int updateTeacherPw(int teacherNo, String oldPw, String newPw)
+	{
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("teacherNo", teacherNo);
+		paramMap.put("oldPw", oldPw);
+		paramMap.put("newPw", newPw);
+		return teacherMapper.updateTeacherPw(paramMap);
+	}
+	
+	
+	
+	
+	
 	public List<AvgScore> getTestAvgScore()
 	{
 		return teacherMapper.selectTestAvgScore();
